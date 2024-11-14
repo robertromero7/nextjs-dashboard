@@ -1,36 +1,88 @@
-import { PencilIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
-import Link from 'next/link';
+// This file contains type definitions for your data.
+// It describes the shape of the data, and what data type each property should accept.
+// For simplicity of teaching, we're manually defining these types.
+// However, these types are generated automatically if you're using an ORM such as Prisma.
+export type User = {
+  id: string;
+  name: string;
+  email: string;
+  password: string;
+};
 
-export function CreateInvoice() {
-  return (
-    <Link
-      href="/dashboard/invoices/create"
-      className="flex h-10 items-center rounded-lg bg-blue-600 px-4 text-sm font-medium text-white transition-colors hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
-    >
-      <span className="hidden md:block">Create Invoice</span>{' '}
-      <PlusIcon className="h-5 md:ml-4" />
-    </Link>
-  );
-}
+export type Customer = {
+  id: string;
+  name: string;
+  email: string;
+  image_url: string;
+};
 
-export function UpdateInvoice({ id }: { id: string }) {
-  return (
-    <Link
-      href="/dashboard/invoices"
-      className="rounded-md border p-2 hover:bg-gray-100"
-    >
-      <PencilIcon className="w-5" />
-    </Link>
-  );
-}
+export type Invoice = {
+  id: string;
+  customer_id: string;
+  amount: number;
+  date: string;
+  // In TypeScript, this is called a string union type.
+  // It means that the "status" property can only be one of the two strings: 'pending' or 'paid'.
+  status: 'pending' | 'paid';
+};
 
-export function DeleteInvoice({ id }: { id: string }) {
-  return (
-    <>
-      <button className="rounded-md border p-2 hover:bg-gray-100">
-        <span className="sr-only">Delete</span>
-        <TrashIcon className="w-5" />
-      </button>
-    </>
-  );
-}
+export type Revenue = {
+  month: string;
+  revenue: number;
+};
+
+export type LatestInvoice = {
+  id: string;
+  name: string;
+  image_url: string;
+  email: string;
+  amount: string;
+};
+
+// The database returns a number for amount, but we later format it to a string with the formatCurrency function
+export type LatestInvoiceRaw = Omit<LatestInvoice, 'amount'> & {
+  amount: number;
+};
+
+export type InvoicesTable = {
+  id: string;
+  customer_id: string;
+  name: string;
+  email: string;
+  image_url: string;
+  date: string;
+  amount: number;
+  status: 'pending' | 'paid';
+};
+
+export type CustomersTableType = {
+  id: string;
+  name: string;
+  email: string;
+  image_url: string;
+  total_invoices: number;
+  total_pending: number;
+  total_paid: number;
+};
+
+export type FormattedCustomersTable = {
+  id: string;
+  name: string;
+  email: string;
+  image_url: string;
+  total_invoices: number;
+  total_pending: string;
+  total_paid: string;
+};
+
+export type CustomerField = {
+  id: string;
+  name: string;
+};
+
+export type InvoiceForm = {
+  id: string;
+  customer_id: string;
+  amount: number;
+  status: 'pending' | 'paid';
+};
